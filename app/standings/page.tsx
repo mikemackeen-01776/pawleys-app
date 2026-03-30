@@ -31,37 +31,40 @@ export default function StandingsPage() {
         return
       }
 
-      const { data: playersData, error: playersError } = await supabase
-        .from('players')
-        .select('id, first_name, last_name')
+const { data: standingsData, error: standingsError } = await supabase
+  .from('player_standings')
+  .select('player_id, total_points')
 
-      if (playersError) {
-        setError(playersError.message)
-        setLoading(false)
-        return
-      }
+if (standingsError) {
+  setError(standingsError.message)
+  setLoading(false)
+  return
+}
 
-      const byPlayer: Record<string, StandingRow> = {}
+const { data: playersData, error: playersError } = await supabase
+  .from('players')
+  .select('id, first_name, last_name')
 
-      for (const row of pointsData || []) {
-        const pid = row.player_id as string
-        if (!byPlayer[pid]) {
-          const p = playersData!.find((pl) => pl.id === pid)
-          byPlayer[pid] = {
-            id: pid,
-            first_name: p?.first_name ?? '',
-            last_name: p?.last_name ?? '',
-            total_points: 0,
-          }
-        }
-        byPlayer[pid].total_points += Number(row.points)
-      }
+if (playersError) {
+  setError(playersError.message)
+  setLoading(false)
+  return
+}
 
-      const list = Object.values(byPlayer).sort(
-        (a, b) => b.total_points - a.total_points
-      )
+const totals = new Map(
+  (standingsData || []).map((r) => [r.player_id, Number(r.total_points) || 0])
+)
 
-      setRows(list)
+const list = (playersData || [])
+  .map((p) => ({
+    id: p.id,
+    first_name: p.first_name,
+    last_name: p.last_name,
+    total_points: totals.get(p.id) ?? 0,
+  }))
+  .sort((a, b) => b.total_points - a.total_points)
+
+setRows(list)
       setLoading(false)
     }
 

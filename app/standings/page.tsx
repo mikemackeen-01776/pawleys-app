@@ -21,9 +21,9 @@ export default function StandingsPage() {
       setLoading(true)
       setError(null)
 
-      const { data: pointsData, error: pointsError } = await supabase
-        .from('player_points')
-        .select('player_id, points')
+      const { data, error } = await supabase
+  .from('player_standings')
+  .select('player_id, total_points');
 
       if (pointsError) {
         setError(pointsError.message)

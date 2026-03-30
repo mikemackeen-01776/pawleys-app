@@ -17,44 +17,50 @@ export default function StandingsPage() {
   const [error, setError] = useState<string | null>(null)
 
  useEffect(() => {
-  async function loadStandings() {
+  async function loadStandings().catch((err) => {
+  setError(String(err))
+  setLoading(false)
+}){, [])
     setLoading(true)
     setError(null)
 
-    const { data: standingsData, error: standingsError } = await supabase
-      .from('player_standings')
-      .select('player_id, total_points')
+ const { data: playersData, error: playersError } = await supabase
+  .from('players')
+  .select('id, first_name, last_name')
 
-    if (standingsError) {
-      setError(standingsError.message)
-      setLoading(false)
-      return
-    }
+if (playersError) {
+  setError(playersError.message)
+  setLoading(false)
+  return
+}
 
-    const { data: playersData, error: playersError } = await supabase
-      .from('players')
-      .select('id, first_name, last_name')
+const { data: standingsDataRaw, error: standingsError } = await supabase
+  .from('player_standings')
+  .select('player_id, total_points')
 
-    if (playersError) {
-      setError(playersError.message)
-      setLoading(false)
-      return
-    }
+if (standingsError) {
+  setError(standingsError.message)
+  setLoading(false)
+  return
+}
 
-    const totals = new Map(
-      (standingsData || []).map((r) => [r.player_id, Number(r.total_points) || 0])
-    )
+const standingsMap = new Map(
+  (standingsDataRaw ?? []).map((row) => [row.player_id, Number(row.total_points ?? 0)])
+)
 
-    const list = (playersData || [])
-      .map((p) => ({
-        id: p.id,
-        first_name: p.first_name,
-        last_name: p.last_name,
-        total_points: totals.get(p.id) ?? 0,
-      }))
-      .sort((a, b) => b.total_points - a.total_points)
+const list = (playersData ?? [])
+  .map((p) => ({
+    id: p.id,
+    first_name: p.first_name,
+    last_name: p.last_name,
+    total_points: standingsMap.get(p.id) ?? 0,
+  }))
+  .sort(
+    (a, b) =>
+      b.total_points - a.total_points || a.id.localeCompare(b.id)
+  )
 
-    setRows(list)
+setRows(list)
     setLoading(false)
   }
 

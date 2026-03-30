@@ -23,8 +23,19 @@ export default function HomePage() {
   }
 
   return (
-    <main style={{ padding: '1.5rem', fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont' }}>
-      <h1>Pawleys Tournament Tracker</h1>
+  <main style={{ padding: '1rem' }}>
+    <img
+      src="/pii-2026-logo.jpg"
+      alt="Pawleys Island Invitational 2026 logo"
+      style={{
+        width: '220px',
+        maxWidth: '100%',
+        height: 'auto',
+        marginBottom: '1rem',
+      }}
+    />
+    <h1>Pawleys Invitational Standings</h1>
+    
 
       {status && (
         <p style={{ color: status.startsWith('Error') ? 'red' : 'green' }}>

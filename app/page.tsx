@@ -25,7 +25,7 @@ export default function HomePage() {
   return (
   <main style={{ padding: '1rem' }}>
     <img
-      src="/PII 2026 Logo.png"
+      src="/pii-2026-logo.png"
       alt="Pawleys Island Invitational 2026 logo"
       style={{
         width: '220px',

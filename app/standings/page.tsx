@@ -17,12 +17,23 @@ export default function StandingsPage() {
   const [error, setError] = useState<string | null>(null)
 
  useEffect(() => {
-  async function loadStandings().catch((err) => {
-  setError(String(err))
-  setLoading(false)
-}){, [])
-    setLoading(true)
-    setError(null)
+  async function loadStandings() {
+    try {
+      const res = await fetch('/api/standings')
+      if (!res.ok) {
+        throw new Error('Failed to load standings')
+      }
+      const data = await res.json()
+      setRows(data.rows)
+    } catch (err: any) {
+      setError(String(err.message || err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  loadStandings()
+}, [])
 
  const { data: playersData, error: playersError } = await supabase
   .from('players')

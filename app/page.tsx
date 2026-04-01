@@ -22,50 +22,51 @@ export default function HomePage() {
     }
   }
 
- return (
-  <main style={{ padding: '1rem' }}>
-    <div
-      style={{
-        backgroundColor: '#002b5c',
-        padding: '1.5rem',
-        borderRadius: '12px',
-        display: 'inline-block',
-        marginBottom: '1rem',
-      }}
-    >
-      <img
-        src="/pii-2026-logo.png"
-        alt="Pawleys Island Invitational 2026 logo"
+  return (
+    <main style={{ padding: '1rem' }}>
+      <div
         style={{
-          width: '220px',
-          maxWidth: '100%',
-          height: 'auto',
-          display: 'block',
+          backgroundColor: '#002b5c',
+          padding: '1.5rem',
+          borderRadius: '12px',
+          display: 'inline-block',
+          marginBottom: '1rem',
         }}
-      />
-    </div>
+      >
+        <img
+          src="/pii-2026-logo.png"
+          alt="Pawleys Island Invitational 2026 logo"
+          style={{
+            width: '220px',
+            maxWidth: '100%',
+            height: 'auto',
+            display: 'block',
+          }}
+        />
+      </div>
 
-    <h1>Pawleys Invitational Standings</h1>
+      <h1>Pawleys Invitational Standings</h1>
 
-    {status && (
-      <p style={{ color: status.startsWith('Error') ? 'red' : 'green' }}>
-        {status}
-      </p>
-    )}
+      {status && (
+        <p style={{ color: status.startsWith('Error') ? 'red' : 'green' }}>
+          {status}
+        </p>
+      )}
 
-    <button onClick={handleRecalc} style={{ marginBottom: '1rem' }}>
-      Recalculate scores
-    </button>
+      <button onClick={handleRecalc} style={{ marginBottom: '1rem' }}>
+        Recalculate scores
+      </button>
 
-    <p>Welcome to the scoring app for our Pawleys trip.</p>
+      <p>Welcome to the scoring app for our Pawleys trip.</p>
 
-    <ul style={{ listStyle: 'none', padding: 0, marginTop: '1rem' }}>
-      <li style={{ marginBottom: '0.5rem' }}>
-        <Link href="/enter-score">Enter a score</Link>
-      </li>
-      <li>
-        <Link href="/standings">View standings</Link>
-      </li>
-    </ul>
-  </main>
-)
+      <ul style={{ listStyle: 'none', padding: 0, marginTop: '1rem' }}>
+        <li style={{ marginBottom: '0.5rem' }}>
+          <Link href="/enter-score">Enter a score</Link>
+        </li>
+        <li>
+          <Link href="/standings">View standings</Link>
+        </li>
+      </ul>
+    </main>
+  )
+}

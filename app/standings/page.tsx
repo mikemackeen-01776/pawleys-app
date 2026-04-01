@@ -19,12 +19,42 @@ export default function StandingsPage() {
   useEffect(() => {
     async function loadStandings() {
       try {
-        const res = await fetch('/api/standings')
-        if (!res.ok) {
-          throw new Error('Failed to load standings')
+        const { data: playersData, error: playersError } = await supabase
+          .from('players')
+          .select('id, first_name, last_name')
+
+        if (playersError) {
+          throw new Error(playersError.message)
         }
-        const data = await res.json()
-        setRows(data.rows)
+
+        const { data: standingsDataRaw, error: standingsError } = await supabase
+          .from('player_standings')
+          .select('player_id, total_points')
+
+        if (standingsError) {
+          throw new Error(standingsError.message)
+        }
+
+        const standingsMap = new Map(
+          (standingsDataRaw ?? []).map((row) => [
+            row.player_id,
+            Number(row.total_points ?? 0),
+          ])
+        )
+
+        const list = (playersData ?? [])
+          .map((p) => ({
+            id: p.id,
+            first_name: p.first_name,
+            last_name: p.last_name,
+            total_points: standingsMap.get(p.id) ?? 0,
+          }))
+          .sort(
+            (a, b) =>
+              b.total_points - a.total_points || a.id.localeCompare(b.id)
+          )
+
+        setRows(list)
       } catch (err: any) {
         setError(String(err.message || err))
       } finally {
@@ -51,7 +81,9 @@ export default function StandingsPage() {
         <tbody>
           {rows.map((r) => (
             <tr key={r.id}>
-              <td>{r.first_name} {r.last_name}</td>
+              <td>
+                {r.first_name} {r.last_name}
+              </td>
               <td>{r.total_points}</td>
             </tr>
           ))}
@@ -60,4 +92,3 @@ export default function StandingsPage() {
     </main>
   )
 }
-

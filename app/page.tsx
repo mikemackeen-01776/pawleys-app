@@ -26,7 +26,7 @@ export default function HomePage() {
     <main style={{ padding: '1rem' }}>
       <div
         style={{
-          backgroundColor: '#002b5c',
+          backgroundColor: '#dff4ff',
           padding: '1.5rem',
           borderRadius: '12px',
           display: 'inline-block',

@@ -23,7 +23,15 @@ export default function HomePage() {
   }
 
   return (
-  <main style={{ padding: '1rem' }}>
+<main style={{ padding: '1rem' }}>
+  <div
+    style={{
+      backgroundColor: '#002b5c',      // deep navy that matches the logo
+      padding: '1.5rem',
+      borderRadius: '12px',
+      display: 'inline-block',
+    }}
+  >
     <img
       src="/pii-2026-logo.png"
       alt="Pawleys Island Invitational 2026 logo"
@@ -31,10 +39,14 @@ export default function HomePage() {
         width: '220px',
         maxWidth: '100%',
         height: 'auto',
-        marginBottom: '1rem',
+        display: 'block',
       }}
     />
-    <h1>Pawleys Invitational Standings</h1>
+  </div>
+
+  <h1 style={{ marginTop: '1rem' }}>Pawleys Invitational Standings</h1>
+  ...
+</main>
     
 
       {status && (
